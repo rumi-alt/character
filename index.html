@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>닮은꼴 캐릭터 프롬프트 생성기</title>
+  <style>
+    :root {
+      --primary: #4f46e5;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --border: #e2e8f0;
+      --text: #0f172a;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      padding: 28px;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    }
+    h1 {
+      font-size: 1.5rem;
+      margin-top: 0;
+      margin-bottom: 24px;
+      color: var(--primary);
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 12px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 16px;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    label {
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    select, input {
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    select:focus, input:focus {
+      border-color: var(--primary);
+    }
+    .custom-input {
+      margin-top: 4px;
+      display: none;
+    }
+    .output-section {
+      margin-top: 32px;
+      padding: 20px;
+      background: #f1f5f9;
+      border-radius: 12px;
+    }
+    .output-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .output-title {
+      font-weight: bold;
+      font-size: 1rem;
+    }
+    textarea {
+      width: 100%;
+      height: 100px;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      resize: vertical;
+      font-size: 0.95rem;
+      box-sizing: border-box;
+    }
+    .btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: opacity 0.2s;
+    }
+    .btn:hover {
+      opacity: 0.9;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>🎨 캐릭터 프롬프트 생성기</h1>
+  
+  <div class="grid">
+    <!-- 1. 성별 -->
+    <div class="form-group">
+      <label for="f1">1. 성별</label>
+      <select id="f1" onchange="toggleGenderHair(); generatePrompt();">
+        <option value="한국인 남성">한국인 남성</option>
+        <option value="한국인 여성">한국인 여성</option>
+      </select>
+    </div>
+
+    <!-- 2. 나이대 -->
+    <div class="form-group">
+      <label for="f2">2. 나이대</label>
+      <select id="f2" onchange="generatePrompt()">
+        <option value="30대">30대</option>
+        <option value="40대">40대</option>
+        <option value="50대">50대</option>
+        <option value="60대">60대</option>
+        <option value="70대">70대</option>
+        <option value="80대">80대</option>
+      </select>
+    </div>
+
+    <!-- 3. 인상 및 분위기 -->
+    <div class="form-group">
+      <label for="f3">3. 인상 및 분위기</label>
+      <select id="f3" onchange="generatePrompt()">
+        <option value="중후하고 인자한 분위기">중후하고 인자한</option>
+        <option value="우아하고 세련된 분위기">우아하고 세련된</option>
+        <option value="친근하고 부드러운 분위기">친근하고 부드러운</option>
+        <option value="지적이고 시크한 분위기">지적이고 시크한</option>
+      </select>
+    </div>
+
+    <!-- 4. 얼굴형 -->
+    <div class="form-group">
+      <label for="f4">4. 얼굴형</label>
+      <select id="f4" onchange="generatePrompt()">
+        <option value="둥근 얼굴형">둥근형</option>
+        <option value="긴 얼굴형">긴형</option>
+        <option value="사각형 얼굴형">사각형</option>
+        <option value="역삼각형 얼굴형">역삼각형</option>
+        <option value="계란형 얼굴형">계란형</option>
+      </select>
+    </div>
+
+    <!-- 5. 눈 -->
+    <div class="form-group">
+      <label for="f5">5. 눈</label>
+      <select id="f5" onchange="generatePrompt()">
+        <option value="작고 날카로운 눈">작고 날카로운</option>
+        <option value="크고 시원한 눈">크고 시원한</option>
+        <option value="보통 크기의 눈">보통 크기의</option>
+      </select>
+    </div>
+
+    <!-- 6. 쌍꺼풀 -->
+    <div class="form-group">
+      <label for="f6_1">6. 쌍꺼풀</label>
+      <select id="f6_1" onchange="generatePrompt()">
+        <option value="진한 쌍꺼풀">진하게 있는</option>
+        <option value="속쌍꺼풀">속쌍꺼풀이 있는</option>
+        <option value="쌍꺼풀 없는 눈">없는</option>
+      </select>
+    </div>
+
+    <!-- 6(2). 코 모양 -->
+    <div class="form-group">
+      <label for="f6_2">6. 코 모양</label>
+      <select id="f6_2" onchange="generatePrompt()">
+        <option value="보통 코">보통의</option>
+        <option value="오똑하고 높은 코">오똑하고 높은</option>
+        <option value="낮고 뭉툭한 코">낮고 뭉툭한</option>
+        <option value="매부리코 형태">매부리코 형태의</option>
+      </select>
+    </div>
+
+    <!-- 7. 헤어스타일 (선택/입력) -->
+    <div class="form-group">
+      <label for="f7">7. 헤어스타일</label>
+      <select id="f7" onchange="handleSelectChange(this, 'f7_custom')">
+        <!-- JS로 동적 생성 (성별 연동) -->
+      </select>
+      <input type="text" id="f7_custom" class="custom-input" placeholder="헤어스타일 직접 입력" oninput="generatePrompt()">
+    </div>
+
+    <!-- 8. 수염 (남성 전용) -->
+    <div class="form-group" id="beard-group">
+      <label for="f8">8. 수염 (남성 선택사항)</label>
+      <select id="f8" onchange="generatePrompt()">
+        <option value="수염이 없는 깔끔한 얼굴">수염이 없는 깔끔한 얼굴</option>
+        <option value="콧수염과 턱수염이 멋스럽게 있는">콧수염과 턱수염이 멋스럽게 있는</option>
+        <option value="콧수염만 있는">콧수염만 있는</option>
+        <option value="턱수염만 있는">턱수염만 있는</option>
+      </select>
+    </div>
+
+    <!-- 9. 안경 -->
+    <div class="form-group">
+      <label for="f9">9. 안경</label>
+      <select id="f9" onchange="generatePrompt()">
+        <option value="안경 미착용">안경 미착용</option>
+        <option value="검은색 뿔테 안경 착용">검은색 뿔테 안경</option>
+        <option value="무테 안경 착용">갈색 뿔테 안경</option>
+        <option value="금속테 안경 착용">금속테 안경</option>
+        <option value="무테 안경 착용">무테 안경</option>
+      </select>
+    </div>
+
+    <!-- 10. 액세서리 -->
+    <div class="form-group">
+      <label for="f10">10. 액세서리</label>
+      <select id="f10" onchange="generatePrompt()">
+        <option value="장신구 없음">장신구 없음</option>
+        <option value="심플한 귀걸이 착용">심플한 귀걸이</option>
+        <option value="목걸이 착용">목걸이</option>
+        <option value="팔찌 착용">팔찌</option>
+        <option value="스카프 착용">스카프</option>
+      </select>
+    </div>
+
+    <!-- 11. 상의 (선택/입력) -->
+    <div class="form-group">
+      <label for="f11">11. 자켓</label>
+      <select id="f11" onchange="handleSelectChange(this, 'f11_custom')">
+        <option value="자켓 없음">자켓 없음</option>
+        <option value="차분한 네이비 블레이저">차분한 네이비 블레이저</option>
+        <option value="베이지색 트렌치 코트">베이지색 트렌치 코트</option>
+        <option value="캐주얼한 데님 재킷">캐주얼한 데님 재킷</option>
+        <option value="custom">직접 입력</option>
+      </select>
+      <input type="text" id="f11_custom" class="custom-input" placeholder="상의 직접 입력" oninput="generatePrompt()">
+    </div>
+
+    <!-- 12.상의 (선택/입력) -->
+    <div class="form-group">
+      <label for="f12">12. 상의(이너)</label>
+      <select id="f12" onchange="handleSelectChange(this, 'f12_custom')">
+        <option value="오버핏 하늘색 린넨 카라 셔츠">오버핏 하늘색 린넨 카라 셔츠</option>
+        <option value="초록색 스트라이프 티셔츠">초록색 스트라이프 티셔츠</option>
+        <option value="흰색 무지 티셔츠">흰색 무지 티셔츠</option>
+        <option value="검정색 무지 티셔츠">검정색 무지 티셔츠</option>
+        <option value="custom">직접 입력</option>
+      </select>
+      <input type="text" id="f12_custom" class="custom-input" placeholder="이너 직접 입력" oninput="generatePrompt()">
+    </div>
+
+    <!-- 13. 하의 (선택/입력) -->
+    <div class="form-group">
+      <label for="f13">13. 하의</label>
+      <select id="f13" onchange="handleSelectChange(this, 'f13_custom')">
+        <option value="카키색 와이드 팬츠">카키색 와이드 팬츠</option>
+        <option value="통이 넓은 린넨 남색 바지">통이 넓은 린넨 남색 바지</option>
+        <option value="일자 핏 생지 데님 바지">일자 핏 생지 데님 바지</option>
+        <option value="블랙 슬랙스">블랙 슬랙스</option>
+        <option value="custom">직접 입력</option>
+      </select>
+      <input type="text" id="f13_custom" class="custom-input" placeholder="하의 직접 입력" oninput="generatePrompt()">
+    </div>
+
+    <!-- 14. 신발 (선택/입력) -->
+    <div class="form-group">
+      <label for="f14">14. 신발</label>
+      <select id="f14" onchange="handleSelectChange(this, 'f14_custom')">
+        <option value="흰색 스니커즈">흰색 스니커즈</option>
+        <option value="검정색 구두">검정색 구두</option>
+        <option value="클래식 로퍼">클래식 로퍼</option>
+        <option value="캐주얼 스니커즈">캐주얼 스니커즈</option>
+        <option value="custom">직접 입력</option>
+      </select>
+      <input type="text" id="f14_custom" class="custom-input" placeholder="신발 직접 입력" oninput="generatePrompt()">
+    </div>
+
+    <!-- 15. 모자 -->
+    <div class="form-group">
+      <label for="f15">15. 모자</label>
+      <select id="f15" onchange="generatePrompt()">
+        <option value="모자 없음">모자 없음</option>
+        <option value="여름용 페도라">여름용 페도라</option>
+        <option value="볼캡">볼캡</option>
+        <option value="헌팅캡">헌팅캡</option>
+      </select>
+    </div>
+
+    <!-- 16. 전체적인 스타일 / 콘셉트 -->
+    <div class="form-group">
+      <label for="f16">16. 전체적인 스타일 / 콘셉트</label>
+      <select id="f16" onchange="generatePrompt()">
+        <!-- 기존 룩 옵션 -->
+        <option value="클래식하면서도 트렌디한 어반 아메카지 룩">클래식하면서도 트렌디한 어반 아메카지 룩</option>
+        <option value="내추럴하고 편안한 시니어 캐주얼 룩">내추럴하고 편안한 시니어 캐주얼 룩</option>
+        <option value="모던하고 단정한 오피스/외출 룩">모던하고 단정한 오피스/외출 룩</option>
+        <!-- 추가된 화풍 및 예술 스타일 -->
+        <option value="수채화 스타일">수채화</option>
+        <option value="유화 스타일">유화</option>
+        <option value="연필 에칭 스타일">연필 에칭</option>
+        <option value="시네마틱 스타일">시네마틱</option>
+        <option value="빈티지/레트로 스타일">빈티지/레트로</option>
+        <option value="흑백 스타일">흑백</option>
+        <option value="3D 애니메이션 스타일">3D 애니메이션</option>
+        <option value="귀여운 3D 토이 스타일">귀여운 3D 토이</option>
+        <option value="플랫 일러스트 스타일">플랫 일러스트</option>
+        <option value="손그림 감성 일러스트 스타일">손그림 감성 일러스트</option>
+        <option value="한국 웹툰 스타일">한국 웹툰</option>
+        <option value="일본 애니메이션 스타일">일본 애니메이션</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- 결과 출력 섹션 -->
+  <div class="output-section">
+    <div class="output-header">
+      <span class="output-title">생성된 프롬프트</span>
+      <button class="btn" onclick="copyPrompt()">복사하기</button>
+    </div>
+    <textarea id="result" readonly></textarea>
+  </div>
+</div>
+
+<script>
+  const hairOptions = {
+    "한국인 남성": [
+      { text: "짧은 은발", val: "짧은 은발" },
+      { text: "댄디컷", val: "댄디컷" },
+      { text: "리젠트컷", val: "리젠트컷" },
+      { text: "자연스러운 반곱슬", val: "자연스러운 반곱슬" },
+      { text: "짧은 숏컷", val: "짧은 숏컷" }
+    ],
+    "한국인 여성": [
+      { text: "세련된 숏컷", val: "세련된 숏컷" },
+      { text: "적당히 짧은 머리", val: "적당히 짧은 머리" },
+      { text: "단발머리", val: "단발머리" },
+      { text: "중단발 C컬펌", val: "중단발 C컬펌" },
+      { text: "긴머리 웨이브", val: "긴머리 웨이브" },
+      { text: "올림머리", val: "올림머리" },
+      { text: "파마머리", val: "파마머리" }
+    ]
+  };
+
+  function toggleGenderHair() {
+    const gender = document.getElementById("f1").value;
+    const hairSelect = document.getElementById("f7");
+    const beardGroup = document.getElementById("beard-group");
+
+    // 수염 옵션 노출 여부
+    if (gender === "한국인 남성") {
+      beardGroup.style.display = "flex";
+    } else {
+      beardGroup.style.display = "none";
+    }
+
+    // 헤어스타일 옵션 교체
+    hairSelect.innerHTML = "";
+    hairOptions[gender].forEach(opt => {
+      const el = document.createElement("option");
+      el.value = opt.val;
+      el.textContent = opt.text;
+      hairSelect.appendChild(el);
+    });
+    
+    // 직접 입력 옵션 추가
+    const customOpt = document.createElement("option");
+    customOpt.value = "custom";
+    customOpt.textContent = "직접 입력";
+    hairSelect.appendChild(customOpt);
+
+    // 직접 입력 영역 초기화
+    handleSelectChange(hairSelect, "f7_custom");
+  }
+
+  function handleSelectChange(selectEl, customInputId) {
+    const inputEl = document.getElementById(customInputId);
+    if (selectEl.value === "custom") {
+      inputEl.style.display = "block";
+    } else {
+      inputEl.style.display = "none";
+      inputEl.value = "";
+    }
+    generatePrompt();
+  }
+
+  function getValue(selectId, customInputId) {
+    const selectEl = document.getElementById(selectId);
+    if (selectEl && selectEl.value === "custom") {
+      const customVal = document.getElementById(customInputId).value.trim();
+      return customVal !== "" ? customVal : "";
+    }
+    return selectEl ? selectEl.value : "";
+  }
+
+  function generatePrompt() {
+    const gender = document.getElementById("f1").value;
+    
+    const parts = [
+      getValue("f1"),
+      getValue("f2"),
+      getValue("f3"),
+      getValue("f4"),
+      getValue("f5"),
+      getValue("f6_1"),
+      getValue("f6_2"),
+      getValue("f7", "f7_custom")
+    ];
+
+    if (gender === "한국인 남성") {
+      parts.push(getValue("f8"));
+    }
+
+    parts.push(
+      getValue("f9"),
+      getValue("f10"),
+      getValue("f11", "f11_custom"),
+      getValue("f12", "f12_custom"),
+      getValue("f13", "f13_custom"),
+      getValue("f14", "f14_custom"),
+      getValue("f15"),
+      getValue("f16")
+    );
+
+    // 공백 및 빈 항목 제거 후 연결
+    const filteredParts = parts.filter(p => p !== "" && p !== "장신구 없음" && p !== "안경 미착용" && p !== "모자 없음");
+    
+    // 요구사항: 선택된 조합 + '전신, 정면사진, 세로사진, 흰색배경'
+    const finalPrompt = filteredParts.join(", ") + ", 전신, 정면사진, 세로사진, 흰색배경";
+    
+    document.getElementById("result").value = finalPrompt;
+  }
+
+  function copyPrompt() {
+    const textarea = document.getElementById("result");
+    textarea.select();
+    document.execCommand("copy");
+    alert("프롬프트가 클립보드에 복사되었습니다!");
+  }
+
+  // 초기화 실행
+  window.onload = function() {
+    toggleGenderHair();
+  };
+</script>
+
+</body>
+</html>
