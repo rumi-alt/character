@@ -245,7 +245,7 @@
       <input type="text" id="f11_custom" class="custom-input" placeholder="상의 직접 입력" oninput="generatePrompt()">
     </div>
 
-    <!-- 12.상의 (선택/입력) -->
+    <!-- 12. 상의(이너) (선택/입력) -->
     <div class="form-group">
       <label for="f12">12. 상의(이너)</label>
       <select id="f12" onchange="handleSelectChange(this, 'f12_custom')">
@@ -299,11 +299,9 @@
     <div class="form-group">
       <label for="f16">16. 전체적인 스타일 / 콘셉트</label>
       <select id="f16" onchange="generatePrompt()">
-        <!-- 기존 룩 옵션 -->
         <option value="클래식하면서도 트렌디한 어반 아메카지 룩">클래식하면서도 트렌디한 어반 아메카지 룩</option>
         <option value="내추럴하고 편안한 시니어 캐주얼 룩">내추럴하고 편안한 시니어 캐주얼 룩</option>
         <option value="모던하고 단정한 오피스/외출 룩">모던하고 단정한 오피스/외출 룩</option>
-        <!-- 추가된 화풍 및 예술 스타일 -->
         <option value="수채화 스타일">수채화</option>
         <option value="유화 스타일">유화</option>
         <option value="연필 에칭 스타일">연필 에칭</option>
@@ -317,6 +315,89 @@
         <option value="한국 웹툰 스타일">한국 웹툰</option>
         <option value="일본 애니메이션 스타일">일본 애니메이션</option>
       </select>
+    </div>
+
+    <!-- 17. 표정 (신규 추가) -->
+    <div class="form-group">
+      <label for="f17_exp">17. 표정</label>
+      <select id="f17_exp" onchange="handleSelectChange(this, 'f17_exp_custom')">
+        <option value="밝게 웃는 표정 (cheerful smiling expression)">웃는 표정</option>
+        <option value="부드럽게 미소 짓는 표정 (soft gentle smile)">미소 짓는 표정</option>
+        <option value="깜짝 놀란 표정 (surprised expression)">놀란 표정</option>
+        <option value="인상을 찡그린 표정 (frowning expression)">찡그린 표정</option>
+        <option value="화난 표정 (angry expression)">화난 표정</option>
+        <option value="귀엽게 윙크하는 표정 (winking expression)">윙크</option>
+        <option value="차분한 무표정 (neutral expression)">무표정</option>
+        <option value="custom">직접 입력</option>
+      </select>
+      <input type="text" id="f17_exp_custom" class="custom-input" placeholder="표정 직접 입력" oninput="generatePrompt()">
+    </div>
+
+    <!-- 18. 포즈 (신규 추가) -->
+    <div class="form-group">
+      <label for="f18_pose">18. 포즈</label>
+      <select id="f18_pose" onchange="handleSelectChange(this, 'f18_pose_custom')">
+        <option value="자연스럽게 서 있는 포즈 (standing pose)">서 있기</option>
+        <option value="손으로 V 표시를 하는 포즈 (making a V sign with hand pose)">손으로 V 표시</option>
+        <option value="손으로 작은 하트를 만드는 포즈 (making a finger heart pose)">손을 하트 포즈 (손가락 하트)</option>
+        <option value="양손으로 머리 위로 큰 하트를 만드는 포즈 (making a big heart shape above head pose)">머리 위로 하트 포즈</option>
+        <option value="엄지손가락을 세워 최고에요 하는 포즈 (thumbs up pose)">최고에요 포즈 (엄지 척)</option>
+        <option value="한쪽 손가락으로 가리키는 포즈 (pointing finger pose)">손가락으로 가리키는 포즈</option>
+        <option value="custom">직접 입력</option>
+      </select>
+      <input type="text" id="f18_pose_custom" class="custom-input" placeholder="포즈 직접 입력" oninput="generatePrompt()">
+    </div>
+
+    <!-- 19. 신체 비율 -->
+    <div class="form-group">
+      <label for="f19">19. 신체 비율</label>
+      <select id="f19" onchange="generatePrompt()">
+        <option value="보통 비율 (realistic character proportion)">보통 비율</option>
+        <option value="SD 캐릭터 비율 (chibi SD character proportion)">SD 캐릭터 비율</option>
+      </select>
+    </div>
+
+    <!-- 20. 촬영 범위 -->
+    <div class="form-group">
+      <label for="f20">20. 촬영 범위</label>
+      <select id="f20" onchange="generatePrompt()">
+        <option value="어깨까지 (close-up shoulder-up headshot portrait)">어깨까지 (Headshot / Shoulder-up)</option>
+        <option value="허리까지 (medium waist-up shot)">허리까지 (Waist-up / Medium shot)</option>
+        <option value="전신 (full body shot)">전신 (Full body)</option>
+        <option value="와이드 샷 (wide angle shot)">와이드 샷 (Wide angle)</option>
+      </select>
+    </div>
+
+    <!-- 21. 시선 / 방향 -->
+    <div class="form-group">
+      <label for="f21">21. 시선 / 방향</label>
+      <select id="f21" onchange="generatePrompt()">
+        <option value="정면 바라보는 구도 (front view facing camera)">정면</option>
+        <option value="측면 구도 (side profile view)">측면</option>
+      </select>
+    </div>
+
+    <!-- 22. 사진 방향 / 구도 -->
+    <div class="form-group">
+      <label for="f22">22. 사진 방향</label>
+      <select id="f22" onchange="generatePrompt()">
+        <option value="세로 방향 사진 (vertical aspect ratio portrait)">세로 사진</option>
+        <option value="가로 방향 사진 (horizontal aspect ratio landscape)">가로 사진</option>
+      </select>
+    </div>
+
+    <!-- 23. 배경 -->
+    <div class="form-group">
+      <label for="f23">23. 배경</label>
+      <select id="f23" onchange="handleSelectChange(this, 'f23_custom')">
+        <option value="흰색 배경 (clean plain white background)">흰색 배경</option>
+        <option value="단색 배경 (solid color background)">단색 배경</option>
+        <option value="아늑한 카페 배경 (cozy indoor cafe background)">카페</option>
+        <option value="시원한 바닷가 배경 (sunny beach coast background)">바닷가</option>
+        <option value="청량한 계곡 배경 (cool mountain stream valley background)">계곡</option>
+        <option value="custom">직접 입력</option>
+      </select>
+      <input type="text" id="f23_custom" class="custom-input" placeholder="배경 직접 입력" oninput="generatePrompt()">
     </div>
   </div>
 
@@ -355,14 +436,12 @@
     const hairSelect = document.getElementById("f7");
     const beardGroup = document.getElementById("beard-group");
 
-    // 수염 옵션 노출 여부
     if (gender === "한국인 남성") {
       beardGroup.style.display = "flex";
     } else {
       beardGroup.style.display = "none";
     }
 
-    // 헤어스타일 옵션 교체
     hairSelect.innerHTML = "";
     hairOptions[gender].forEach(opt => {
       const el = document.createElement("option");
@@ -371,13 +450,11 @@
       hairSelect.appendChild(el);
     });
     
-    // 직접 입력 옵션 추가
     const customOpt = document.createElement("option");
     customOpt.value = "custom";
     customOpt.textContent = "직접 입력";
     hairSelect.appendChild(customOpt);
 
-    // 직접 입력 영역 초기화
     handleSelectChange(hairSelect, "f7_custom");
   }
 
@@ -403,7 +480,8 @@
 
   function generatePrompt() {
     const gender = document.getElementById("f1").value;
-    
+    const shotRange = getValue("f20"); // 촬영 범위
+
     const parts = [
       getValue("f1"),
       getValue("f2"),
@@ -423,18 +501,34 @@
       getValue("f9"),
       getValue("f10"),
       getValue("f11", "f11_custom"),
-      getValue("f12", "f12_custom"),
-      getValue("f13", "f13_custom"),
-      getValue("f14", "f14_custom"),
+      getValue("f12", "f12_custom")
+    );
+
+    // 구도가 '어깨까지'인 경우 하의/신발 제외
+    if (!shotRange.includes("어깨까지")) {
+      parts.push(
+        getValue("f13", "f13_custom"), // 하의
+        getValue("f14", "f14_custom")  // 신발
+      );
+    }
+
+    parts.push(
       getValue("f15"),
-      getValue("f16")
+      getValue("f16"),
+      getValue("f17_exp", "f17_exp_custom"),   // 표정
+      getValue("f18_pose", "f18_pose_custom"), // 포즈
+      getValue("f19"), // 신체 비율
+      shotRange,       // 촬영 범위
+      getValue("f21"), // 시선/방향
+      getValue("f22"), // 사진 방향
+      getValue("f23", "f23_custom") // 배경
     );
 
     // 공백 및 빈 항목 제거 후 연결
     const filteredParts = parts.filter(p => p !== "" && p !== "장신구 없음" && p !== "안경 미착용" && p !== "모자 없음");
     
-    // 요구사항: 선택된 조합 + '전신, 정면사진, 세로사진, 흰색배경'
-    const finalPrompt = filteredParts.join(", ") + ", 전신, 정면사진, 세로사진, 흰색배경";
+    // 최종 프롬프트 생성
+    const finalPrompt = filteredParts.join(", ");
     
     document.getElementById("result").value = finalPrompt;
   }
@@ -446,7 +540,6 @@
     alert("프롬프트가 클립보드에 복사되었습니다!");
   }
 
-  // 초기화 실행
   window.onload = function() {
     toggleGenderHair();
   };
