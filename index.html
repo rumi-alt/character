@@ -481,9 +481,12 @@
       <div class="form-group">
         <label for="f17_exp">17. 표정</label>
         <select id="f17_exp" onchange="handleSelectChange(this, 'f17_exp_custom')">
-          <option value="밝게 웃는 표정 (cheerful smiling expression)">웃는 표정</option>
-          <option value="부드럽게 미소 짓는 표정 (soft gentle smile)">미소 짓는 표정</option>
-          <option value="차분한 무표정 (neutral expression)">무표정</option>
+          <option value="밝게 웃는 표정 ">웃는 표정</option>
+          <option value="부드럽게 미소 짓는 표정 ">미소 짓는 표정</option>
+          <option value="놀란 표정 ">놀란 표정</option>
+          <option value="화난 표정 ">화난 표정</option>
+          <option value="윙크하는 표정 ">윙크하는 표정</option>
+          <option value="차분한 무표정 ">무표정</option>
           <option value="custom">직접 입력</option>
         </select>
         <input type="text" id="f17_exp_custom" class="custom-input" placeholder="표정 직접 입력" oninput="generatePrompt()">
@@ -492,8 +495,12 @@
       <div class="form-group">
         <label for="f18_pose">18. 포즈</label>
         <select id="f18_pose" onchange="handleSelectChange(this, 'f18_pose_custom')">
-          <option value="자연스럽게 서 있는 포즈 (standing pose)">서 있기</option>
-          <option value="손으로 V 표시를 하는 포즈 (making a V sign with hand pose)">손으로 V 표시</option>
+          <option value="자연스럽게 서 있는 포즈">서 있기</option>
+          <option value="손으로 V 표시를 하는 포즈">손으로 V 표시</option>
+        <option value="손으로 작은 하트를 만드는 포즈">손을 하트 포즈 (손가락 하트)</option>
+        <option value="양손으로 머리 위로 큰 하트를 만드는 포즈">머리 위로 하트 포즈</option>
+        <option value="엄지손가락을 세워 최고에요 하는 포즈">최고에요 포즈 (엄지 척)</option>
+        <option value="한쪽 손가락으로 가리키는 포즈">손가락으로 가리키는 포즈</option>
           <option value="custom">직접 입력</option>
         </select>
         <input type="text" id="f18_pose_custom" class="custom-input" placeholder="포즈 직접 입력" oninput="generatePrompt()">
